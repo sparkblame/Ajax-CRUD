@@ -1,0 +1,134 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="js/jquery-3.5.0.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.min.js"></script>
+
+</head>
+
+<body>
+    <div id="content">
+        省份：
+        <select v-model="selectProvince" @change="loadCity()">
+            <option value="">请选择 </option>
+            <option v-for="item in provinceList" :value="item.provinceCode">{{item.provinceName}}</option>
+        </select> 城市：
+        <select>
+            <option value="">请选择</option>
+            <option v-for="item in cityList" :value="item.cityCode">{{item.cityName}}</option>
+        </select>
+    </div>
+
+    <table id="content2">
+        <thead>
+            <tr>
+                <th width="40"><input type="checkbox" id="ckAll" title="选择" /></th>
+                <th class="bg" id="sortByUserName" data="userName">用户名</th>
+                <th width="110">中文名</th>
+                <th>邮箱</th>
+                <th width="70" class="bg" id="sortByProvinceName" data="provinceName">省份</th>
+                <th width="70">城市</th>
+                <th width="120">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in userList" :key="item.userName">
+                <td><input type="checkbox" /></td>
+                <td>{{item.userName}}</td>
+                <td>{{item.chrName}}</td>
+                <td>{{item.mail}}</td>
+                <td>{{item.provinceName}}</td>
+                <td>{{item.cityName}}</td>
+                <td>
+                    <a href="#">删除</a>&nbsp;
+                    <a href="#">修改</a>&nbsp;
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
+<script>
+    var vue1 = new Vue({
+        el: "#content",
+        data: {
+            provinceList: [],
+            selectProvince: "",
+            cityList: []
+        },
+        created: function() {
+            this.loadProvince()
+        },
+        methods: {
+            loadCity() {
+                var _self = this;
+                $.ajax({
+                    type: "post",
+                    url: "queryProvinceCity.do",
+                    data: {
+                        provinceCode: _self.selectProvince
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        _self.cityList = response;
+                    }
+                });
+
+            },
+            loadProvince() {
+                var _self = this;
+                $.ajax({
+                    type: "post",
+                    url: "queryProvinceCity.do",
+                    data: {},
+                    dataType: "json",
+                    success: function(response) {
+                        _self.provinceList = response
+                    }
+                });
+            }
+        }
+
+    });
+
+    var vue2 = new Vue({
+        el: "#content2",
+        data: {
+            userList: [],
+            pageSize: "10",
+            pageNumber: '1',
+            sort: "userName",
+            sortOrder: ""
+        },
+        created: function() {
+            this.query();
+        },
+        methods: {
+            query() {
+                var _self = this;
+                var pageParams = new Object(); //分页参数
+                pageParams.pageSize = vue2.pageSize;
+                pageParams.pageNumber = this.pageNumber;
+                pageParams.sort = this.sort;
+                pageParams.sortOrder = this.sortOrder;
+                var queryData = new Object(); //提交的数据
+                queryData.pageParams = JSON.stringify(pageParams);
+                $.ajax({
+                    type: "post",
+                    url: "queryUser.do",
+                    data: queryData,
+                    dataType: "json",
+                    success: function(response) {
+                        _self.userList = response.rows;
+                    }
+                });
+            }
+        }
+    });
+</script>

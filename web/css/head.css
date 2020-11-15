@@ -1,0 +1,83 @@
+/*页面头部*/
+
+body {
+    font: 12px Microsoft Yahei, tahoma, HELVETICA;
+    color: #333;
+    /* background-image: url(../images/bg2.jpg); */
+}
+
+a {
+    text-decoration: none;
+}
+
+#header {
+    background: url(../images/logo.png) no-repeat;
+    /*当对子元素设置float属性时，子元素会脱离文档流，父元素的高度就不包含该子元素的高度,高度塌陷*/
+    overflow: auto;
+}
+
+#rightTop {
+    text-align: right;
+    margin-top: 10px;
+}
+
+#rightTop span {
+    color: red;
+}
+
+#menu {
+    padding: 10px 10px 0 0;
+    /*利用对溢出元素的处理，使父元素紧贴子元素的边界*/
+    overflow: auto;
+}
+
+#menu ul {
+    float: right;
+    list-style: none;
+    margin: 0px;
+    margin-bottom: 10px;
+}
+
+#menu ul li {
+    float: left;
+    display: block;
+    line-height: 30px;
+    margin: 0 10px
+}
+
+#menu ul li a {
+    font-weight: bold;
+    color: #666
+}
+
+#menu ul li a:hover {
+    color: red;
+}
+
+.menuDiv {
+    width: 1px;
+    height: 28px;
+    background: #999
+}
+
+#banner {
+    background: url(../images/banner.jpg) center 5px no-repeat;
+    width: 100%;
+    margin: auto;
+    height: 218px;
+    border-bottom: 5px solid #EFEFEF;
+    clear: both
+}
+
+
+/*页面层容器*/
+
+#container {
+    width: 900px;
+    margin: 0px auto
+}
+
+.pageBody {
+    width: 850px;
+    margin: 0 auto;
+}
